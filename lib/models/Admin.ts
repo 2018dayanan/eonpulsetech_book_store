@@ -23,6 +23,12 @@ const adminSchema = new Schema(
   }
 );
 
-const Admin = models.Admin || model('Admin', adminSchema);
+export interface IAdmin extends mongoose.Document {
+  email: string;
+  password?: string;
+  name: string;
+}
+
+const Admin = (models.Admin as mongoose.Model<IAdmin>) || model<IAdmin>('Admin', adminSchema);
 
 export default Admin;
