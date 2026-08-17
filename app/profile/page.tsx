@@ -4,6 +4,8 @@ import User from 'lib/models/User';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
+import ProfileForm from 'components/profile/profile-form';
+
 export default async function ProfilePage() {
   const session = await getSession();
   if (!session) {
@@ -33,16 +35,7 @@ export default async function ProfilePage() {
           </form>
         </div>
         
-        <div className="space-y-4">
-          <div>
-            <h3 className="text-sm font-medium text-neutral-500">Name</h3>
-            <p className="text-lg">{user.name}</p>
-          </div>
-          <div>
-            <h3 className="text-sm font-medium text-neutral-500">Email</h3>
-            <p className="text-lg">{user.email}</p>
-          </div>
-        </div>
+        <ProfileForm user={user} />
 
         <div className="mt-12">
           <h2 className="text-xl font-bold mb-4">My Books</h2>

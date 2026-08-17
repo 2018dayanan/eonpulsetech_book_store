@@ -48,8 +48,8 @@ export async function getBooks() {
   }));
 }
 
-import Cart from '../models/Cart';
 import { cookies } from 'next/headers';
+import Cart from '../models/Cart';
 
 export async function createCart(): Promise<any> {
   await connectToDatabase();
@@ -66,8 +66,11 @@ export async function getCart(): Promise<any> {
   if (!cart) return undefined;
 
   // Manually populate books for each line item
-  const merchandiseIds = cart.lines.map(line => line.merchandiseId);
-  const books = await Book.find({ _id: { $in: merchandiseIds } } as any).lean();
+  const validMerchandiseIds = cart.lines
+    .map(line => line.merchandiseId)
+    .filter(id => mongoose.Types.ObjectId.isValid(id));
+
+  const books = await Book.find({ _id: { $in: validMerchandiseIds } } as any).lean();
   const bookMap = new Map(books.map(b => [b._id.toString(), b]));
 
   let totalQuantity = 0;
@@ -263,7 +266,7 @@ export async function getProduct(handle: string): Promise<any> {
     updatedAt: book.updatedAt.toISOString(),
     pdfUrl: book.pdfUrl,
     variants: [{
-      id: 'default-variant',
+      id: book._id.toString(),
       title: 'Default Title',
       availableForSale: true,
       selectedOptions: [{ name: 'Title', value: 'Default Title' }],

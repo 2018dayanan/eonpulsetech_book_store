@@ -18,6 +18,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    profilePic: {
+      type: String,
+      default: "https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg",
+    },
     purchasedBooks: [
       {
         type: mongoose.Schema.Types.ObjectId,
