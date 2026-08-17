@@ -6,11 +6,14 @@ import Link from "next/link";
 import { Suspense } from "react";
 import MobileMenu from "./mobile-menu";
 import Search, { SearchSkeleton } from "./search";
+import { UserIcon } from "@heroicons/react/24/outline";
+import { getSession } from "lib/auth";
 
 const { SITE_NAME } = process.env;
 
 export async function Navbar() {
   const menu = await getMenu("next-js-frontend-header-menu");
+  const session = await getSession();
 
   return (
     <nav className="relative flex items-center justify-between p-4 lg:px-6">
@@ -52,7 +55,10 @@ export async function Navbar() {
             <Search />
           </Suspense>
         </div>
-        <div className="flex justify-end md:w-1/3">
+        <div className="flex justify-end items-center gap-4 md:w-1/3">
+          <Link href={session ? "/profile" : "/login"} className="flex h-11 w-11 items-center justify-center rounded-md border border-neutral-200 text-black transition-colors hover:bg-neutral-100 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800">
+            <UserIcon className="h-4 transition-all ease-in-out hover:scale-110" />
+          </Link>
           <CartModal />
         </div>
       </div>

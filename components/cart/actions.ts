@@ -7,7 +7,7 @@ import {
   getCart,
   removeFromCart,
   updateCart,
-} from "lib/shopify";
+} from "lib/db/queries";
 import { updateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -37,7 +37,7 @@ export async function removeItem(prevState: any, merchandiseId: string) {
     }
 
     const lineItem = cart.lines.find(
-      (line) => line.merchandise.id === merchandiseId
+      (line: { merchandise: { id: string; }; }) => line.merchandise.id === merchandiseId
     );
 
     if (lineItem && lineItem.id) {
@@ -68,7 +68,7 @@ export async function updateItemQuantity(
     }
 
     const lineItem = cart.lines.find(
-      (line) => line.merchandise.id === merchandiseId
+      (line: { merchandise: { id: string; }; }) => line.merchandise.id === merchandiseId
     );
 
     if (lineItem && lineItem.id) {
