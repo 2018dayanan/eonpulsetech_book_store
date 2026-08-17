@@ -187,21 +187,45 @@ export async function getMenu(handle: string): Promise<any[]> {
   ];
 }
 
+import Category from '../models/Category';
+
 export async function getCollections(): Promise<any[]> {
-  // Return dummy collections
+  await connectToDatabase();
+  const categories = await Category.find().lean();
+  
+  const formattedCategories = categories.map((cat: any) => ({
+    title: cat.name,
+    handle: cat.slug,
+    path: `/search/${cat.slug}`
+  }));
+
   return [
     { title: 'All Books', handle: '', path: '/search' },
-    { title: 'Web Dev', handle: 'web-development', path: '/search/web-development' },
+    ...formattedCategories
   ];
 }
 
-export async function getProducts({ query, sortKey, reverse }: { query?: string, sortKey?: string, reverse?: boolean } = {}): Promise<any[]> {
+export async function getProducts({ query, sortKey, reverse, categoryId }: { query?: string, sortKey?: string, reverse?: boolean, categoryId?: string } = {}): Promise<any[]> {
   await connectToDatabase();
-  let filter = {};
+  let filter: any = {};
   if (query) {
-    filter = { title: { $regex: query, $options: 'i' } };
+    filter.title = { $regex: query, $options: 'i' };
   }
-  const books = await Book.find(filter as any).lean();
+  if (categoryId) {
+    filter.categoryId = categoryId;
+  }
+  
+  let sortConfig: any = { createdAt: -1 }; // default
+
+  if (sortKey === 'PRICE') {
+    sortConfig = { price: reverse ? -1 : 1 };
+  } else if (sortKey === 'CREATED_AT') {
+    sortConfig = { createdAt: reverse ? 1 : -1 };
+  } else if (sortKey === 'BEST_SELLING') {
+    sortConfig = { createdAt: -1 }; 
+  }
+
+  const books = await Book.find(filter as any).sort(sortConfig).lean();
 
   return books.map((book: any) => ({
     id: book._id.toString(),
@@ -224,19 +248,25 @@ export async function getProducts({ query, sortKey, reverse }: { query?: string,
 }
 
 export async function getCollection(handle: string): Promise<any> {
-  // Dummy collection return
+  await connectToDatabase();
+  const cat = await Category.findOne({ slug: handle } as any).lean();
+  if (!cat) return null;
+
   return {
-    handle,
-    title: handle.replace('-', ' '),
-    description: `Collection of ${handle}`,
-    seo: { title: handle, description: '' },
-    path: `/search/${handle}`
+    handle: cat.slug,
+    title: cat.name,
+    description: cat.description || `Collection of ${cat.name}`,
+    seo: { title: cat.name, description: cat.description || '' },
+    path: `/search/${cat.slug}`
   };
 }
 
 export async function getCollectionProducts({ collection, sortKey, reverse }: { collection: string, sortKey?: string, reverse?: boolean }): Promise<any[]> {
-  // For now just return all products since we don't have populate ready
-  return getProducts();
+  await connectToDatabase();
+  const cat = await Category.findOne({ slug: collection } as any).lean();
+  if (!cat) return [];
+
+  return getProducts({ sortKey, reverse, categoryId: cat._id.toString() });
 }
 
 import mongoose from 'mongoose';

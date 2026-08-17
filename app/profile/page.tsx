@@ -42,7 +42,7 @@ export default async function ProfilePage() {
           </form>
         </div>
 
-        <ProfileForm user={user} />
+        <ProfileForm user={JSON.parse(JSON.stringify(user))} />
 
         <div className="mt-12">
           <h2 className="text-xl font-bold mb-4">My Books</h2>
