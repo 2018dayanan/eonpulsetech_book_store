@@ -21,10 +21,11 @@ export default async function ProfilePage() {
     redirect('/login');
   }
 
+  const Order = require('lib/models/Order').default;
+  
   let purchasedBooks: any[] = [];
-  if (user.purchasedBooks && user.purchasedBooks.length > 0) {
-    purchasedBooks = await Book.find({ _id: { $in: user.purchasedBooks } } as any).lean();
-  }
+  const orders = await Order.find({ userId: session.userId } as any).populate('bookId').lean();
+  purchasedBooks = orders.map((order: any) => order.bookId).filter(Boolean);
 
   async function logout() {
     "use server";

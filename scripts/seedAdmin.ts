@@ -54,4 +54,5 @@ async function seedAdmin() {
 
 seedAdmin();
 
-export {};
+export { };
+
