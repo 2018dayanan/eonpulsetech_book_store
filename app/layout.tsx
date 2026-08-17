@@ -1,7 +1,6 @@
 import { CartProvider } from "components/cart/cart-context";
 import { Navbar } from "components/layout/navbar";
 import { ConditionalNavbar } from "components/layout/navbar/conditional-navbar";
-import { WelcomeToast } from "components/welcome-toast";
 import { GeistSans } from "geist/font/sans";
 import { getCart } from "lib/db/queries";
 import { ReactNode } from "react";
@@ -41,7 +40,6 @@ export default async function RootLayout({
           <main>
             {children}
             <Toaster closeButton />
-            <WelcomeToast />
           </main>
         </CartProvider>
       </body>
