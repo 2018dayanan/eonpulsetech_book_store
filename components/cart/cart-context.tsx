@@ -104,7 +104,7 @@ function updateCartTotals(
     (sum, item) => sum + Number(item.cost.totalAmount.amount),
     0,
   );
-  const currencyCode = lines[0]?.cost.totalAmount.currencyCode ?? "USD";
+  const currencyCode = lines[0]?.cost.totalAmount.currencyCode ?? "INR";
 
   return {
     totalQuantity,
@@ -123,9 +123,9 @@ function createEmptyCart(): Cart {
     totalQuantity: 0,
     lines: [],
     cost: {
-      subtotalAmount: { amount: "0", currencyCode: "USD" },
-      totalAmount: { amount: "0", currencyCode: "USD" },
-      totalTaxAmount: { amount: "0", currencyCode: "USD" },
+      subtotalAmount: { amount: "0", currencyCode: "INR" },
+      totalAmount: { amount: "0", currencyCode: "INR" },
+      totalTaxAmount: { amount: "0", currencyCode: "INR" },
     },
   };
 }

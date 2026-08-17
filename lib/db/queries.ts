@@ -17,11 +17,11 @@ export async function getBooks() {
     priceRange: {
       maxVariantPrice: {
         amount: book.price.toString(),
-        currencyCode: 'USD',
+        currencyCode: 'INR',
       },
       minVariantPrice: {
         amount: book.price.toString(),
-        currencyCode: 'USD',
+        currencyCode: 'INR',
       }
     },
     featuredImage: {
@@ -87,17 +87,18 @@ export async function getCart(): Promise<any> {
     return {
       id: line.id,
       quantity: line.quantity,
-      cost: { totalAmount: { amount: lineCost.toString(), currencyCode: 'USD' } },
+      cost: { totalAmount: { amount: lineCost.toString(), currencyCode: 'INR' } },
       merchandise: {
         id: book._id.toString(),
         title: 'Default Title',
+        selectedOptions: [{ name: 'Title', value: 'Default Title' }],
         product: {
           title: book.title,
           handle: book._id.toString(),
           availableForSale: true,
           featuredImage: { url: book.coverImage, altText: book.title, width: 500, height: 500 },
           priceRange: {
-            maxVariantPrice: { amount: book.price.toString(), currencyCode: 'USD' },
+            maxVariantPrice: { amount: book.price.toString(), currencyCode: 'INR' },
           },
         }
       }
@@ -110,9 +111,9 @@ export async function getCart(): Promise<any> {
     totalQuantity,
     lines: formattedLines,
     cost: {
-      subtotalAmount: { amount: subtotal.toString(), currencyCode: 'USD' },
-      totalAmount: { amount: subtotal.toString(), currencyCode: 'USD' },
-      totalTaxAmount: { amount: '0', currencyCode: 'USD' }
+      subtotalAmount: { amount: subtotal.toString(), currencyCode: 'INR' },
+      totalAmount: { amount: subtotal.toString(), currencyCode: 'INR' },
+      totalTaxAmount: { amount: '0', currencyCode: 'INR' }
     }
   };
 }
@@ -210,8 +211,8 @@ export async function getProducts({ query, sortKey, reverse }: { query?: string,
     descriptionHtml: `<p>${book.description}</p>`,
     availableForSale: true,
     priceRange: {
-      maxVariantPrice: { amount: book.price.toString(), currencyCode: 'USD' },
-      minVariantPrice: { amount: book.price.toString(), currencyCode: 'USD' }
+      maxVariantPrice: { amount: book.price.toString(), currencyCode: 'INR' },
+      minVariantPrice: { amount: book.price.toString(), currencyCode: 'INR' }
     },
     featuredImage: { url: book.coverImage, altText: book.title, width: 1000, height: 1000 },
     images: [{ url: book.coverImage, altText: book.title, width: 1000, height: 1000 }],
@@ -256,8 +257,8 @@ export async function getProduct(handle: string): Promise<any> {
     descriptionHtml: `<p>${book.description}</p>`,
     availableForSale: true,
     priceRange: {
-      maxVariantPrice: { amount: book.price.toString(), currencyCode: 'USD' },
-      minVariantPrice: { amount: book.price.toString(), currencyCode: 'USD' }
+      maxVariantPrice: { amount: book.price.toString(), currencyCode: 'INR' },
+      minVariantPrice: { amount: book.price.toString(), currencyCode: 'INR' }
     },
     featuredImage: { url: book.coverImage, altText: book.title, width: 1000, height: 1000 },
     images: [{ url: book.coverImage, altText: book.title, width: 1000, height: 1000 }],
@@ -270,7 +271,7 @@ export async function getProduct(handle: string): Promise<any> {
       title: 'Default Title',
       availableForSale: true,
       selectedOptions: [{ name: 'Title', value: 'Default Title' }],
-      price: { amount: book.price.toString(), currencyCode: 'USD' }
+      price: { amount: book.price.toString(), currencyCode: 'INR' }
     }],
     options: [{
       id: 'default-option',
@@ -298,8 +299,8 @@ export async function getProductRecommendations(id: string): Promise<any[]> {
     descriptionHtml: `<p>${book.description}</p>`,
     availableForSale: true,
     priceRange: {
-      maxVariantPrice: { amount: book.price.toString(), currencyCode: 'USD' },
-      minVariantPrice: { amount: book.price.toString(), currencyCode: 'USD' }
+      maxVariantPrice: { amount: book.price.toString(), currencyCode: 'INR' },
+      minVariantPrice: { amount: book.price.toString(), currencyCode: 'INR' }
     },
     featuredImage: { url: book.coverImage, altText: book.title, width: 1000, height: 1000 },
     images: [{ url: book.coverImage, altText: book.title, width: 1000, height: 1000 }],
@@ -308,4 +309,23 @@ export async function getProductRecommendations(id: string): Promise<any[]> {
     updatedAt: book.updatedAt.toISOString(),
     pdfUrl: book.pdfUrl
   }));
+}
+
+export async function getPage(handle: string): Promise<any> {
+  if (handle === 'checkout') return null;
+
+  return {
+    id: handle,
+    title: handle.charAt(0).toUpperCase() + handle.slice(1),
+    handle: handle,
+    body: `<p>This is a dummy page for ${handle}.</p>`,
+    bodySummary: `Dummy page for ${handle}`,
+    seo: { title: handle, description: handle },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+export async function getPages(): Promise<any[]> {
+  return [];
 }

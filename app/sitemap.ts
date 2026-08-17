@@ -1,4 +1,4 @@
-import { getCollections, getPages, getProducts } from "lib/shopify";
+import { getCollections, getPages, getProducts } from "lib/db/queries";
 import { baseUrl, validateEnvironmentVariables } from "lib/utils";
 import { MetadataRoute } from "next";
 
@@ -31,7 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   );
 
-  const pagesPromise = getPages().then((pages) =>
+  const pagesPromise = getPages().then((pages: any[]) =>
     pages.map((page) => ({
       url: `${baseUrl}/${page.handle}`,
       lastModified: page.updatedAt,
