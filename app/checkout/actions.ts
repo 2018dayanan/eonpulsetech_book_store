@@ -20,6 +20,15 @@ export async function placeOrder() {
       await (User as any).findByIdAndUpdate(session.userId, {
         $addToSet: { purchasedBooks: { $each: bookIds } }
       });
+
+      const Order = require('lib/models/Order').default;
+      for (const bookId of bookIds) {
+        await Order.create({
+          userId: session.userId,
+          bookId: bookId,
+          paymentStatus: 'completed'
+        });
+      }
     }
 
     await Cart.findByIdAndDelete(cartId);
