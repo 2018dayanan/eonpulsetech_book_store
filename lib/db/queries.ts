@@ -123,3 +123,75 @@ export async function getCollectionProducts({ collection, sortKey, reverse }: { 
   // For now just return all products since we don't have populate ready
   return getProducts();
 }
+
+import mongoose from 'mongoose';
+
+export async function getProduct(handle: string): Promise<any> {
+  await connectToDatabase();
+
+  if (!mongoose.Types.ObjectId.isValid(handle)) return undefined;
+
+  const book = await Book.findOne({ _id: handle } as any).lean();
+  if (!book) return undefined;
+
+  return {
+    id: book._id.toString(),
+    handle: book._id.toString(),
+    title: book.title,
+    description: book.description,
+    descriptionHtml: `<p>${book.description}</p>`,
+    availableForSale: true,
+    priceRange: {
+      maxVariantPrice: { amount: book.price.toString(), currencyCode: 'USD' },
+      minVariantPrice: { amount: book.price.toString(), currencyCode: 'USD' }
+    },
+    featuredImage: { url: book.coverImage, altText: book.title, width: 1000, height: 1000 },
+    images: [{ url: book.coverImage, altText: book.title, width: 1000, height: 1000 }],
+    seo: { title: book.title, description: book.description },
+    tags: [],
+    updatedAt: book.updatedAt.toISOString(),
+    pdfUrl: book.pdfUrl,
+    variants: [{
+      id: 'default-variant',
+      title: 'Default Title',
+      availableForSale: true,
+      selectedOptions: [{ name: 'Title', value: 'Default Title' }],
+      price: { amount: book.price.toString(), currencyCode: 'USD' }
+    }],
+    options: [{
+      id: 'default-option',
+      name: 'Title',
+      values: ['Default Title']
+    }]
+  };
+}
+
+export async function getProductRecommendations(id: string): Promise<any[]> {
+  await connectToDatabase();
+
+  let filter = {};
+  if (mongoose.Types.ObjectId.isValid(id)) {
+    filter = { _id: { $ne: id } };
+  }
+
+  const books = await Book.find(filter as any).limit(4).lean();
+
+  return books.map((book: any) => ({
+    id: book._id.toString(),
+    handle: book._id.toString(),
+    title: book.title,
+    description: book.description,
+    descriptionHtml: `<p>${book.description}</p>`,
+    availableForSale: true,
+    priceRange: {
+      maxVariantPrice: { amount: book.price.toString(), currencyCode: 'USD' },
+      minVariantPrice: { amount: book.price.toString(), currencyCode: 'USD' }
+    },
+    featuredImage: { url: book.coverImage, altText: book.title, width: 1000, height: 1000 },
+    images: [{ url: book.coverImage, altText: book.title, width: 1000, height: 1000 }],
+    seo: { title: book.title, description: book.description },
+    tags: [],
+    updatedAt: book.updatedAt.toISOString(),
+    pdfUrl: book.pdfUrl
+  }));
+}

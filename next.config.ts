@@ -9,23 +9,11 @@ export default {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "cdn.shopify.com",
-        pathname: "/s/files/**",
+        hostname: "**",
       },
       {
-        protocol: "https",
-        hostname: "res.cloudinary.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "i.ytimg.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "miro.medium.com",
-        pathname: "/**",
+        protocol: "http",
+        hostname: "**",
       },
     ],
   },
