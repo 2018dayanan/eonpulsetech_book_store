@@ -34,6 +34,14 @@ const userSchema = new Schema(
   }
 );
 
-const User = models.User || model('User', userSchema);
+export interface IUser {
+  name: string;
+  email: string;
+  password: string;
+  profilePic?: string;
+  purchasedBooks?: mongoose.Types.ObjectId[];
+}
+
+const User = (models.User as mongoose.Model<IUser>) || model<IUser>('User', userSchema);
 
 export default User;

@@ -23,9 +23,9 @@ const adminSchema = new Schema(
   }
 );
 
-export interface IAdmin extends mongoose.Document {
+export interface IAdmin {
   email: string;
-  password?: string;
+  password: string;
   name: string;
 }
 
