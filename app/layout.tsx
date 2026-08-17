@@ -10,6 +10,8 @@ import { baseUrl } from "lib/utils";
 
 const { SITE_NAME } = process.env;
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   metadataBase: new URL(baseUrl),
   title: {
