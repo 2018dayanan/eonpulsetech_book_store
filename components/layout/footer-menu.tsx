@@ -36,7 +36,7 @@ export default function FooterMenu({ menu }: { menu: Menu[] }) {
 
   return (
     <nav>
-      <ul>
+      <ul className="flex flex-wrap items-center gap-1 md:gap-3">
         {menu.map((item: Menu) => {
           return <FooterMenuItem key={item.title} item={item} />;
         })}
