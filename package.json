@@ -30,7 +30,6 @@
     "@types/node": "22.13.10",
     "@types/react": "19.0.12",
     "@types/react-dom": "19.0.4",
-    "baseline-browser-mapping": "^2.11.14",
     "dotenv": "^17.4.2",
     "postcss": "^8.5.3",
     "prettier": "3.5.3",

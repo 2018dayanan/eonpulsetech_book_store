@@ -21,4 +21,3 @@ README.md
 Dockerfile
 .dockerignore
 nginx.conf
-nixpacks.toml
