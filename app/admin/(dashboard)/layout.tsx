@@ -2,8 +2,6 @@ import { getAdminSession, deleteAdminSession } from 'lib/admin-auth';
 import { redirect } from 'next/navigation';
 import { AdminSidebar } from 'components/admin/admin-sidebar';
 
-export const dynamic = 'force-dynamic';
-
 export default async function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await getAdminSession();
 
