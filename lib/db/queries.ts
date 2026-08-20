@@ -191,9 +191,11 @@ export async function getMenu(handle: string): Promise<any[]> {
 
   // Header menu
   return [
-    { title: 'All Books', path: '/search' },
-    { title: 'Web Dev', path: '/search/web-development' },
-    { title: 'Data Science', path: '/search/data-science-ai' },
+    { title: 'Home', path: '/' },
+    { title: 'About', path: '/about-us' },
+    { title: 'Contact', path: '/contact-us' },
+    { title: 'Privacy Policy', path: '/privacy-policy' },
+    { title: 'Terms & Conditions', path: '/terms-conditions' },
   ];
 }
 
